@@ -1,0 +1,3 @@
+"Hello World" -> upper -> print
+"HELLO" -> lower -> print
+ascii_letters -> upper -> print
