@@ -1,0 +1,37 @@
+# assigning
+foo <- "Hello World"
+
+# pipeline (use of the pl keyword? Or just p? Is p used to execute? Should we maybe use the word run?)
+a -> b -> c
+
+# Create a sub pipeline and assign it to sub
+sub <- (d -> e -> f)
+
+# Execute a subpipeline
+sub <- !(d -> e -> f)  # execute between () and assign result to sub
+
+# running a pipeline with a sub pipeline
+a -> b -> c -> sub
+
+# branching
+a -> [left: b -> c | right: d -> e] -> merge
+
+# Can I also do a classic call?
+foo(x, b, c)
+
+# function definition ([] makes it more consistent with the branching?)
+fn b(x) -> [left, right] {
+    if x >= 10 then x -> left
+    else x -> right
+}
+
+# data types
+n <- 1, 2, 3, 4, 5, 6,  # Alternative: [1, 2, 3, 4, 5]
+n <- 10
+
+# math, 10 10 is "sending" arguments s - arguments are seperated by space in a pipeline
+10 10 -> + -> print  # 20
+"foo" -> upper -> print
+
+# Currying?
+10 -> {10 +} -> print
