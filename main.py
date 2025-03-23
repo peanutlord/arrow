@@ -52,24 +52,24 @@ def main():
     while i < len(tokens):
         token, value = tokens[i]
         if token == Tokens.NUMBER:  # Could also be literal?
-            tree.right = NumberNode(value)
-
-            """
-            # Don't automatically assume it's a arg
-            args = [value]
-
-            i = i + 1
-            # Can I make this more elegant? I don't like how it looks...
-            while tokens[i][0] not in (Tokens.RIGHT_ARROW, Tokens.LEFT_ARROW):
-                token, value = tokens[i]
-                if token == Tokens.NUMBER:
-                    args.append(value)
+            try:
+                # Don't automatically assume it's a arg
+                args = [value]
 
                 i = i + 1
+                # Can I make this more elegant? I don't like how it looks...
+                while tokens[i][0] not in (Tokens.RIGHT_ARROW, Tokens.LEFT_ARROW):
+                    token, value = tokens[i]
+                    if token == Tokens.NUMBER:
+                        args.append(value)
 
-            tree = ArgumentNode(args)
-            continue
-            """
+                    i = i + 1
+
+                tree = ArgumentNode(args)
+                continue
+            except:
+                tree.right = NumberNode(args.pop())
+                continue
 
         if token == Tokens.RIGHT_ARROW or token == Tokens.LEFT_ARROW:  # ->
             node = ArrowNode(value)
