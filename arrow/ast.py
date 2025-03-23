@@ -12,6 +12,12 @@ class NumberNode(ASTNode):
         self.number = number
 
 
+class RootNode(ASTNode):
+    def __init__(self):
+        self.left = None
+        self.right = None
+
+
 class ArrowNode(ASTNode):
     def __init__(self, direction):
         self.direction = direction
