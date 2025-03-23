@@ -1,5 +1,5 @@
 from arrow.scanner import Scanner, Tokens
-from arrow.ast import ArgumentNode, ArrowNode, LiteralNode, NumberNode, RootNode
+from arrow.ast import ArgumentNode, ArrowNode, LiteralNode, NumberNode, StringNode
 
 DEBUG = False
 
@@ -20,7 +20,7 @@ func_map = {
 
 
 def main():
-    with open("scripts/calculator.arrow") as f:
+    with open("scripts/test.arrow") as f:
         scanner: Scanner = Scanner(f)
         tokens = scanner.scan_tokens()
 
@@ -28,38 +28,6 @@ def main():
         for i, (token, value) in enumerate(tokens):
             print(i, token, value)
 
-    r"""
-    10 10 -> + -> print
-    
-    AST should look like this?
-    
-              root
-           /       \
-          ->        ->
-         /   \     
-      10 10   +
-    """
-
-    r"""
-    x <- 20
-    
-        <-
-       /  \
-      x   20 
-    """
-
-
-    # TODO we need a root node it seems? This would ensure we always have a tree... :)
-    r"""
-    x <- 20
-    x -> print
-    
-         root
-       /       \
-     <-         ->
-     / \       /  \
-    x   20    x   print
-    """
     # Let's start again...
     # TODO for later: when we make functions, each function could return a new version of the tree
     root = []
@@ -69,6 +37,13 @@ def main():
     i = 0
     while i < len(tokens):
         token, value = tokens[i]
+
+        if token == Tokens.STRING:
+            node = StringNode(value)
+            if not tree:
+                tree = node
+            else:
+                tree.right = node
 
         if token == Tokens.NUMBER:
             # First we need to figure out if it's assignment or an argument - so let's peek
@@ -118,7 +93,7 @@ def main():
             else:
                 tree.right = literal
 
-        if token == Tokens.NEWLINE or token == Tokens.EOF:
+        if tree and token == Tokens.NEWLINE or token == Tokens.EOF:
             root.append(tree)
             tree = None
 
@@ -151,6 +126,8 @@ def main():
             return name
         elif isinstance(leaf_or_node, ArgumentNode):
             return leaf_or_node.args
+        elif isinstance(leaf_or_node, StringNode):
+            return leaf_or_node.string
 
     for tree in root:
         parse(tree)

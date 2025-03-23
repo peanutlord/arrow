@@ -1,0 +1,7 @@
+10 10 -> + -> print
+
+x <- 10
+x -> print
+
+y <- "Hello World"
+y -> print

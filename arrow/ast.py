@@ -12,6 +12,11 @@ class NumberNode(ASTNode):
         self.number = number
 
 
+class StringNode(ASTNode):
+    def __init__(self, string):
+        self.string = string
+
+
 class RootNode(ASTNode):
     def __init__(self):
         self.left = None
