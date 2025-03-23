@@ -31,7 +31,37 @@ n <- 10
 
 # math, 10 10 is "sending" arguments s - arguments are seperated by space in a pipeline
 10 10 -> + -> print  # 20
+10 3 -> * -> !(10 10 -> +)  # This looks stupid? Maybe I just don't need to reinvent the wheel and just support the "old style" (or maybe also?)
+sum <- !(15 + 10 * 3)
+
 "foo" -> upper -> print
 
-# Currying?
-10 -> {10 +} -> print
+# Currying? {} seems not like a good choice?
+fn +(a, b) -> [next] {
+    return a + b
+}
+
+10 -> {a: 10 +} -> print
+
+# Alternative?
+fn split(msg, by <- "\n") -> [next, error] {  # is there always an error pipeline?
+    ...
+}
+
+# how would filter work?
+fn filter(x) -> [next] {  # next is always the next step if there is no branching?
+    if x < 0 then stop -> next  # stop as a keyword to stop the pipeline? How does the pipeline know it was stopped?
+
+    if x % 2 == 0 then x -> next
+}
+
+fn filter(x) {
+    if x % 2 == 0 then x -> # -> is sending out? Or should "next" be a special variable, always supported with explicit declaration?
+}
+
+fn f(x) {
+    if x % 2 == 0 then x -> forward
+}
+
+1, 2, 3, 4, 5, 6, 7 -> filter -> print # 2, 4, 6
+1, 2, 3, 4, 5, 6, 7 -> filter -> fanout print # 2 4 6 , fanout keyword? To spread instead of having a list?

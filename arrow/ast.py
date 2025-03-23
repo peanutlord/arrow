@@ -7,6 +7,11 @@ class ArgumentNode(ASTNode):
         self.args = args or []
 
 
+class NumberNode(ASTNode):
+    def __init__(self, number):
+        self.number = number
+
+
 class ArrowNode(ASTNode):
     def __init__(self, direction):
         self.direction = direction

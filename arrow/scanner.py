@@ -99,12 +99,13 @@ class Scanner:
             return
 
         if char == " ":  # ignore all whitespace in code
-            # char = self._advance()  # TODO only ignores one whitespace
-            return Tokens.SPACE, " "
+            char = self._advance()  # TODO only ignores one whitespace
+            # return Tokens.SPACE, " "
 
         if char == "\n":
             return Tokens.NEWLINE, r"\n"
 
+        # TODO is this function and variable?
         if char in self._function_pattern:
             f = char
             while (char := self._advance()) in self._function_pattern:
@@ -116,6 +117,8 @@ class Scanner:
 
             # This swallows the \n, so we need to retreat by one
             self._retreat()
+
+            # TODO this needs a different token?
             return Tokens.LITERAL, f
 
         # Do we have a string?
